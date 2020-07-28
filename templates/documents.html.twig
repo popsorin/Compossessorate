@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<table class="table table-hover table-bordered">
+    {% for document in documents%}
+        <thead class="thead-dark">
+        <tr>
+            <th>Nume</th>
+            <th>Localitate</th>
+            <th>Strada</th>
+            <th>Numar casa</th>
+            <th>Hectare</th>
+            <th>Serie</th>
+            <th>Numar</th>
+            <th>CNP</th>
+            <th>Mc</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ document.fullname }}</td>
+            <td>{{ document.locality }}</td>
+            <td>{{ document.street }}</td>
+            <td>{{ document.streetNr }}</td>
+            <td>{{ document.hectare }}</td>
+            <td>{{ document.CISeries }}</td>
+            <td>{{ document.CINr }}</td>
+            <td>{{ document.CNP }}</td>
+            <td>{{ document.cubeMeters }}</td>
+        </tr>
+        </tbody>
+    {% endfor %}
+</table>
+{% endblock %}

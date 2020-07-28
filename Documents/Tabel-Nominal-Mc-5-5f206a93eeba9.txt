@@ -1,0 +1,391 @@
+"157
+RobaViorica
+Gilau
+Republicii
+10
+0,8
+KX
+738500
+2540524010014
+1
+158
+Rodina Anica
+Cluj Napoca
+Donath
+199
+5
+CJ
+26478
+2530614120745
+5
+159
+Runcan Anton
+Somesu Rece
+
+168
+1,5
+KX
+887435
+1530129125171
+1,5
+160
+Salanta Bogdan
+Cluj Napoca
+Donath
+11
+2,4
+CJ
+98618
+1780801125184
+2,4
+161
+Salanta Cornelia
+SomesuCald
+
+94
+4
+DE
+645742
+2400526120661
+4
+162
+Salanta Florin A
+Gilau
+
+27
+2,4
+KC
+559726
+1890422125831
+2,4
+163
+Salanta Gavril
+Cluj Napoca
+Pasteur
+42
+1
+KX
+391405
+1610701120655
+1
+164
+Salanta Ovidiu Ilie
+Gilau
+
+1281
+0,3
+KX
+859203
+1770915125186
+1
+165
+Stan Simion
+Gilau
+Republici
+32
+2
+KX
+799889
+1770129125175
+2
+166
+Salanta Gheorghe
+Gilau
+Principala
+91A
+0,8
+KX
+395634
+1610313125191
+1
+167
+SemereanRozalia
+Cluj Napoca
+Izlazului
+18
+7
+CJ
+239492
+2710811120652
+7
+168
+Salanta Gheorghe
+SomesuCald
+
+120
+1,2
+KX
+722765
+1690329125201
+1,2
+169
+Stan Gavril
+SomesuCald
+
+32
+3
+BN
+599061
+1370122125189
+3
+170
+Salanta Gheorghe
+Capusu Mic
+
+189
+2
+BC
+777636
+1380423125180
+2
+171
+Salanta Gheorghe
+Gilau
+Republicii
+59
+0,3
+KX
+618441
+1740830125185
+1
+172
+SalantaGligor
+Cluj Napoca
+Albinii
+130
+5,5
+KX
+473041
+1610705120699
+5,5
+173
+SalantaIoan
+Cluj Napoca
+Anina
+9
+1,5
+KX
+210164
+1410829126211
+1,5
+174
+SalantaIoan
+Cluj Napoca
+Izlazului
+18
+1
+KX
+311900
+1550917120693
+1
+175
+Salanta Ioan
+Cluj Napoca
+Izlazului
+18
+7
+KX
+358263
+1480908120728
+7
+176
+Stanescu Dan
+Resita
+1 Decembrie
+37
+2,6
+KS
+371761
+1470402113707
+2,6
+177
+Stanescu Calin Ioan
+Cluj Napoca
+Nicolae T
+37
+5,6
+KX
+891416
+1510105120746
+5,6
+178
+Stanescu Aurel
+Timisoara
+Torontalului
+18
+2,6
+DG
+508176
+1430123354774
+2,6
+179
+Salanta Ioan
+SomesuCald
+
+120
+1,2
+KX
+612249
+1751029120716
+1,2
+180
+Salanta Ioan
+Cluj Napoca
+G. Alexandres
+37
+0,8
+KX
+485697
+1560211120729
+1
+181
+Salanta Iulian
+Cluj Napoca
+Micus
+1
+2
+KX
+682449
+1780720120691
+2
+182
+Salanta Maria
+Gilau
+Republicii
+E9
+2
+KX
+471418
+2660216125172
+2
+183
+Salanta Maria
+Cluj Napoca
+Primaverii
+6
+4
+KX
+361559
+2590923120705
+4
+184
+Salanta Nicolae
+Cluj Napoca
+SeptimiuAlbini
+130
+6
+KX
+473043
+1400425120663
+6
+185
+Salanta Silvia
+Gilau
+Republicii
+17
+0,3
+KX
+859203
+1770915125186
+1
+186
+Salanta Sorin Ghe.
+Gilau
+Principala
+H2
+1
+KX
+503376
+1820619124243
+1
+187
+Seres Ana Gabriela
+Cluj Napoca
+Albini
+110
+1,3
+CJ
+002359
+2701002120671
+1,3
+188
+SalantaTodorica
+Cluj Napoca
+Padin
+14
+5
+KX
+89046
+2500919112068
+5
+189
+SalantaVasile
+Cluj Napoca
+Eliade
+40
+4
+KX
+554167
+1680303125214
+4
+190
+SalantaVasile
+Floresti
+Florilor
+85
+4,5
+KX
+503564
+1581030112071
+4,5
+191
+SlantaVasile
+SomesuCald
+
+109
+5,5
+KX
+839227
+1290623125219
+5,5
+192
+Salanta Victoria
+Gilau
+Republicii
+27
+0,8
+KX
+552244
+2581005125186
+1
+193
+Salanta Victoria
+Gilau
+Republicii
+13P
+3
+KX
+265172
+2541013125175
+3
+194
+Sandor Liviu
+Cluj Napoca
+Lucernei
+13
+0,8
+CJ
+303446
+1610927120641
+1
+195
+Semerean David
+Monariu
+
+
+2,5
+XB
+159304
+1471204062951
+2,5
+Presedinte"
