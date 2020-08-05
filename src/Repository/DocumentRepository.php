@@ -4,7 +4,11 @@ namespace App\Repository;
 
 use App\Entity\Document;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ConnectionException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @method Document|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +21,31 @@ class DocumentRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Document::class);
+    }
+
+    /**
+     * @param array $documents
+     * @throws ConnectionException
+     */
+    public function insertMultipleValues(array $documents)
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->getConnection()->beginTransaction();
+        try {
+        foreach ($documents as $document){
+                $query = $entityManager->createQuery(
+                    sprintf('SELECT d FROM %s d WHERE d.CNP = ?1', Document::class)
+                )->setParameter(1, (int)$document->getCNP());
+                if (count($query->getResult()) === 0) {
+                    $entityManager->persist($document);
+                    $entityManager->flush();
+                }
+            }
+        $entityManager->getConnection()->commit();
+        } catch (Exception $exception) {
+            $entityManager->getConnection()->rollBack();
+            throw $exception;
+        }
     }
 
     // /**

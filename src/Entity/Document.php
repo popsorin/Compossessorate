@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Repository\DocumentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Entity(repositoryClass=DocumentRepository::class)
+ * @ORM\Table(name="document",uniqueConstraints={@ORM\UniqueConstraint(name="cnp", columns={"CNP"})})
  */
 class Document
 {
@@ -48,7 +51,7 @@ class Document
     private $CISeries;
 
     /**
-     * @ORM\Column(type="string", length=3)
+     * @ORM\Column(type="string", length=6)
      */
     private $CINr;
 
@@ -173,5 +176,10 @@ class Document
         $this->cubeMeters = $cubeMeters;
 
         return $this;
+    }
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addConstraint( new UniqueEntity(['fields' => 'CNP']));
     }
 }

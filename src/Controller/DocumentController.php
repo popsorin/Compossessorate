@@ -3,14 +3,26 @@
 namespace App\Controller;
 
 use App\Entity\Document;
+use App\Entity\Task;
 use App\FormType\DocumentType;
+use App\FormType\FormDocumentType;
+use App\Repository\DocumentRepository;
+use App\Services\DocumentFactory;
+use Doctrine\DBAL\ConnectionException;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Doctrine\ORM\ORMException;
+use ReflectionException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DocumentController extends AbstractController
 {
@@ -21,16 +33,19 @@ class DocumentController extends AbstractController
     {
         $documents = $this->getDoctrine()->getRepository(Document::class)->findAll();
         $form = $this->createForm(DocumentType::class, new Document());
-        return $this->render("documents.html.twig", ["form" => $form->createView(), "documents" => $documents]);
+        return $this->render("compossessorate/documents.html.twig", ["form" => $form->createView(), "documents" => $documents]);
     }
 
     /**
      * @Route("/documents", name="document_upload", methods={"POST"})
+     *
      * @param Request $request
      * @param SluggerInterface $slugger
+     * @param DocumentFactory $documentFactory
      * @return Response
+     * @throws ReflectionException|ConnectionException
      */
-    public function upload(Request $request, SluggerInterface $slugger)
+    public function upload(Request $request, SluggerInterface $slugger, DocumentFactory $documentFactory)
     {
         $document = new Document();
         $form = $this->createForm(DocumentType::class, $document);
@@ -57,22 +72,48 @@ class DocumentController extends AbstractController
                     // ... handle exception if something happens during file upload
                 }
             }
+            /** @var DocumentRepository $documentRepository */
+            $documentRepository = $this->getDoctrine()->getRepository(Document::class);
+            $documents = $documentFactory->createFromFile(sprintf("%s/%s",$this->getParameter('documents_directory'), $newFilename));
+            try {
+                $documents = $documentRepository->insertMultipleValues($documents);
+            } catch (ORMException $exception) {
+                return $this->render("error.html.twig", ["form" => $form->createView(), "documents" => $exception->getMessage()]);
+            }
+            $documents = $documentRepository->findAll();
         }
-        $documents = $this->getDoctrine()->getRepository(Document::class)->findAll();
 
-        return $this->render("documents.html.twig", ["form" => $form->createView(), "documents" => $documents]);
-//        $row = 1;
-//        $file = $_FILES["document"];
-//        if (($handle = fopen($file, "r")) !== FALSE) {
-//            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-//                $num = count($data);
-//                echo "<p> $num fields in line $row: <br /></p>\n";
-//                $row++;
-//                for ($c=0; $c < $num; $c++) {
-//                    echo $data[$c] . "<br />\n";
-//                }
-//            }
-//            fclose($handle);
-//        }
+        return $this->render("compossessorate/documents.html.twig", ["form" => $form->createView(), "documents" => $documents]);
+    }
+
+    /**
+     * @Route("/document/new", name="document_new", methods={"GET", "POST"})
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function new(Request $request, ValidatorInterface $validator)
+    {
+        $document = new Document();
+
+        $form = $this->createForm(FormDocumentType::class, $document);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $document = $form->getData();
+            $errors = $validator->validate($document);
+            if(count($errors) > 0) {
+                return $this->render("compossessorate/new-document.html.twig", [
+                    "errors" => $errors]);
+            }
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($document);
+            $entityManager->flush();
+
+            return $this->redirect('/documents');
+        }
+
+        return $this->render('compossessorate/new-document.html.twig', ['form' => $form->createView(), 'errors' => []]);
     }
 }
