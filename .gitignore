@@ -9,6 +9,7 @@
 vendor/
 /.idea/
 /Documents/
+/.env
 ###< symfony/framework-bundle ###
 
 ###> symfony/webpack-encore-bundle ###
