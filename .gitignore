@@ -11,7 +11,9 @@ vendor/
 /Documents/
 /.env
 ###< symfony/framework-bundle ###
-
+/symfony.lock
+/webpack.config.js
+/composer.lock
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/
