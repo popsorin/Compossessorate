@@ -12,6 +12,7 @@
         <th>Numar</th>
         <th>CNP</th>
         <th>Mc</th>
+        <th>Action</th>
     </tr>
     </thead>
     {% for document in documents%}
@@ -26,6 +27,7 @@
             <td>{{ document.CINr }}</td>
             <td>{{ document.CNP }}</td>
             <td>{{ document.cubeMeters }}</td>
+            <td> <a href="/document/update/{{ document.documentId }}" class="btn text-light bg-dark"> Editeaza </a> <a href="/document/delete/{{ document.documentId }}" class="btn text-light bg-danger"> Sterge </a> </td>
         </tr>
         </tbody>
     {% endfor %}
