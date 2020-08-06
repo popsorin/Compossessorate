@@ -3,11 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Document;
-use App\Entity\Task;
 use App\FormType\DocumentType;
 use App\FormType\FormDocumentType;
 use App\Repository\DocumentRepository;
 use App\Services\DocumentFactory;
+use App\Services\UploadingService;
 use Doctrine\DBAL\ConnectionException;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -41,12 +41,13 @@ class DocumentController extends AbstractController
      * @Route("/documents", name="document_upload", methods={"POST"})
      *
      * @param Request $request
-     * @param SluggerInterface $slugger
+     * @param UploadingService $service
      * @param DocumentFactory $documentFactory
      * @return Response
-     * @throws ReflectionException|ConnectionException
+     * @throws ConnectionException
+     * @throws ReflectionException
      */
-    public function upload(Request $request, SluggerInterface $slugger, DocumentFactory $documentFactory)
+    public function upload(Request $request, UploadingService $service, DocumentFactory $documentFactory)
     {
         $document = new Document();
         $form = $this->createForm(DocumentType::class, $document);
@@ -54,24 +55,8 @@ class DocumentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $brochureFile */
             $brochureFile = $form->get('compossessorate_table')->getData();
-
-            // this condition is needed because the 'brochure' field is not required
-            // so the PDF file must be processed only when a file is uploaded
-            if ($brochureFile) {
-                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
-
-                // Move the file to the directory where brochures are stored
-                try {
-                    $brochureFile->move(
-                        $this->getParameter('documents_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
+            if($brochureFile){
+                $newFilename = $service->upload($brochureFile, $this->getParameter('documents_directory'));
             }
             /** @var DocumentRepository $documentRepository */
             $documentRepository = $this->getDoctrine()->getRepository(Document::class);
