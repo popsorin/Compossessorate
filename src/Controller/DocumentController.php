@@ -27,12 +27,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DocumentController extends AbstractController
 {
+    const ORDER_BY_FULLNAME = "fullname";
     /**
      * @Route("/documents", name="documents_list", methods={"GET"})
+     * @param Request $request
+     * @return Response
      */
-    public function listDocuments()
+    public function listDocuments(Request $request)
     {
-        $documents = $this->getDoctrine()->getRepository(Document::class)->findAll();
+        $order[self::ORDER_BY_FULLNAME] = $request->query->get(self::ORDER_BY_FULLNAME);
+        $documents = $this->getDoctrine()->getRepository(Document::class)->findBy([], $order);
         $form = $this->createForm(DocumentType::class, new Document());
         return $this->render("compossessorate/documents.html.twig", ["form" => $form->createView(), "documents" => $documents]);
     }
