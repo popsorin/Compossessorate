@@ -7,6 +7,7 @@ use App\FormType\DocumentType;
 use App\FormType\FormDocumentType;
 use App\Repository\DocumentRepository;
 use App\Services\DocumentFactory;
+use App\Services\RequestParameterBag;
 use App\Services\UploadingService;
 use Doctrine\DBAL\ConnectionException;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -28,14 +29,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class DocumentController extends AbstractController
 {
     const ORDER_BY_FULLNAME = "fullname";
+
     /**
      * @Route("/documents", name="documents_list", methods={"GET"})
      * @param Request $request
+     * @param RequestParameterBag $parameterBag
      * @return Response
      */
-    public function listDocuments(Request $request)
+    public function listDocuments(Request $request, RequestParameterBag $parameterBag)
     {
-        $order[self::ORDER_BY_FULLNAME] = $request->query->get(self::ORDER_BY_FULLNAME);
+        $order = $parameterBag->createFromRequest($request);
         $documents = $this->getDoctrine()->getRepository(Document::class)->findBy([], $order);
         $form = $this->createForm(DocumentType::class, new Document());
         return $this->render("compossessorate/documents.html.twig", ["form" => $form->createView(), "documents" => $documents]);
