@@ -32,15 +32,15 @@ class DocumentRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         $entityManager->getConnection()->beginTransaction();
         try {
-        foreach ($documents as $document){
-                $query = $entityManager->createQuery(
-                    sprintf('SELECT d FROM %s d WHERE d.CNP = ?1', Document::class)
-                )->setParameter(1, (int)$document->getCNP());
-                if (count($query->getResult()) === 0) {
-                    $entityManager->persist($document);
-                    $entityManager->flush();
+            foreach ($documents as $document){
+                    $query = $entityManager->createQuery(
+                        sprintf('SELECT d FROM %s d WHERE d.CNP = ?1', Document::class)
+                    )->setParameter(1, (int)$document->getCNP());
+                    if (count($query->getResult()) === 0) {
+                        $entityManager->persist($document);
+                        $entityManager->flush();
+                    }
                 }
-            }
         $entityManager->getConnection()->commit();
         } catch (Exception $exception) {
             $entityManager->getConnection()->rollBack();

@@ -28,8 +28,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DocumentController extends AbstractController
 {
-    const ORDER_BY_FULLNAME = "fullname";
-
     /**
      * @Route("/documents", name="documents_list", methods={"GET"})
      * @param Request $request
@@ -69,7 +67,7 @@ class DocumentController extends AbstractController
             $documentRepository = $this->getDoctrine()->getRepository(Document::class);
             $documents = $documentFactory->createFromFile(sprintf("%s/%s",$this->getParameter('documents_directory'), $newFilename));
             try {
-                $documents = $documentRepository->insertMultipleValues($documents);
+                $documentRepository->insertMultipleValues($documents);
             } catch (ORMException $exception) {
                 return $this->render("error.html.twig", ["form" => $form->createView(), "documents" => $exception->getMessage()]);
             }
