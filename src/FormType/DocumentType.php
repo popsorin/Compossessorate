@@ -15,7 +15,7 @@ class DocumentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('compossessorate_table', FileType::class, [
-
+            "attr" => ['class' => "btn btn-dark mt-0 float-left nav-link"],
             'mapped' => false,
             'required' => false,
             'constraints' => [
@@ -31,7 +31,9 @@ class DocumentType extends AbstractType
                 ])
                 ]
             ]);
-        $builder->add('submit', SubmitType::class);
+        $builder->add('submit', SubmitType::class, [
+            "attr" => ["class" => "btn btn-dark nav-link"]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
