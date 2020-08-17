@@ -61,14 +61,16 @@ class DocumentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $brochureFile */
             $brochureFile = $form->get('compossessorate_table')->getData();
+            $documentDirectory = $this->getParameter('documents_directory');
             if($brochureFile){
-                $newFilename = $service->upload($brochureFile, $this->getParameter('documents_directory'));
+                $newFilename = $service->upload($brochureFile, $documentDirectory);
             }
             /** @var DocumentRepository $documentRepository */
             $documentRepository = $this->getDoctrine()->getRepository(Document::class);
             $documents = $documentFactory->createFromFile(sprintf("%s/%s",$this->getParameter('documents_directory'), $newFilename));
             try {
                 $documentRepository->insertMultipleValues($documents);
+                unlink(sprintf('%s/%s', $documentDirectory, $newFilename));
             } catch (ORMException $exception) {
                 return $this->render("error.html.twig", ["form" => $form->createView(), "documents" => $exception->getMessage()]);
             }
