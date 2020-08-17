@@ -162,13 +162,16 @@ class DocumentController extends AbstractController
 
     /**
      * @Route("/documents/convert", name="documents_convert", methods={"GET"})
+     * @param Request $request
      * @param PDFConverter $converter
+     * @param RequestParameterBag $parameterBag
      * @return RedirectResponse
      */
-    public function convert(PDFConverter $converter)
+    public function convert(Request $request, PDFConverter $converter, RequestParameterBag $parameterBag)
     {
+        $order = $parameterBag->createFromRequest($request);
         $document = new Document();
-        $documents = $this->getDoctrine()->getRepository(Document::class)->findBy([]);
+        $documents = $this->getDoctrine()->getRepository(Document::class)->findBy([], $order);
         $form = $this->createForm(DocumentType::class, $document);
         $html = $this->renderView("compossessorate/table-of-documents.html.twig", [
             "documents" => $documents,
