@@ -19,4 +19,5 @@ vendor/
 /public/build/
 npm-debug.log
 yarn-error.log
+SavedDocuments/
 ###< symfony/webpack-encore-bundle ###

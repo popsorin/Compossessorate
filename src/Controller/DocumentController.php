@@ -6,6 +6,7 @@ use App\Entity\Document;
 use App\FormType\DocumentType;
 use App\FormType\FormDocumentType;
 use App\Repository\DocumentRepository;
+use App\Services\PDFConverter;
 use App\Services\DocumentFactory;
 use App\Services\RequestParameterBag;
 use App\Services\UploadingService;
@@ -151,6 +152,29 @@ class DocumentController extends AbstractController
             return $this->redirect('/documents');
         }
 
-        return $this->render('compossessorate/new-document.html.twig', ['form' => $form->createView(), 'errors' => []]);
+        return $this->render('compossessorate/new-document.html.twig', [
+            'form' => $form->createView(),
+            'errors' => []
+        ]);
+    }
+
+    /**
+     * @Route("/documents/convert", name="documents_convert", methods={"GET"})
+     * @param PDFConverter $converter
+     * @return RedirectResponse
+     */
+    public function convert(PDFConverter $converter)
+    {
+        $document = new Document();
+        $documents = $this->getDoctrine()->getRepository(Document::class)->findBy([]);
+        $form = $this->createForm(DocumentType::class, $document);
+        $html = $this->renderView("compossessorate/table-of-documents.html.twig", [
+            "documents" => $documents,
+            'form' => $form->createView()
+        ]);
+        $projectDirectory = $this->getParameter("kernel.project_dir");
+        $converter->convert($html, 1, $projectDirectory);
+
+        return $this->redirect("/documents");
     }
 }
