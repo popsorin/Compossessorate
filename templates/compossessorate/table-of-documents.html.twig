@@ -1,0 +1,32 @@
+{% block body %}
+<table style="border-collapse: collapse; border: 1px solid black">
+    <thead>
+    <tr>
+        <th style="border: 1px solid black">Nume</th>
+        <th style="border: 1px solid black">Localitate</th>
+        <th style="border: 1px solid black">Strada</th>
+        <th style="border: 1px solid black">Numar casa</th>
+        <th style="border: 1px solid black">Hectare</th>
+        <th style="border: 1px solid black">Serie</th>
+        <th style="border: 1px solid black">Numar</th>
+        <th style="border: 1px solid black">CNP</th>
+        <th style="border: 1px solid black">Mc</th>
+    </tr>
+    </thead>
+    {% for document in documents%}
+    <tbody>
+    <tr>
+        <td style="border: 1px solid black">{{ document.fullname }}</td>
+        <td style="border: 1px solid black">{{ document.locality }}</td>
+        <td style="border: 1px solid black">{{ document.street }}</td>
+        <td style="border: 1px solid black">{{ document.streetNr }}</td>
+        <td style="border: 1px solid black">{{ document.hectare }}</td>
+        <td style="border: 1px solid black">{{ document.CISeries }}</td>
+        <td style="border: 1px solid black">{{ document.CINr }}</td>
+        <td style="border: 1px solid black">{{ document.CNP }}</td>
+        <td style="border: 1px solid black">{{ document.cubeMeters }}</td>
+      </tr>
+    </tbody>
+    {% endfor %}
+</table>
+{% endblock %}

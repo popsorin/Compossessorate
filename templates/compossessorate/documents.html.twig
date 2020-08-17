@@ -1,38 +1,38 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-<table class="table table-hover table-bordered">
-    <thead class="thead-dark">
-    <tr>
-        <th>Nume
-            <a class="btn bg-dark text-light" href="/documents?fullname=asc">&uarr;</a>
-            <a class="btn bg-dark text-light" href="/documents?fullname=desc">&darr;</a>
-        </th>
-        <th>Localitate</th>
-        <th>Strada</th>
-        <th>Numar casa</th>
-        <th>Hectare</th>
-        <th>Serie</th>
-        <th>Numar</th>
-        <th>CNP</th>
-        <th>Mc</th>
-        <th>Action</th>
-    </tr>
-    </thead>
-    {% for document in documents%}
-        <tbody>
+    <table class="table table-hover table-bordered">
+        <thead class="thead-dark">
         <tr>
-            <td>{{ document.fullname }}</td>
-            <td>{{ document.locality }}</td>
-            <td>{{ document.street }}</td>
-            <td>{{ document.streetNr }}</td>
-            <td>{{ document.hectare }}</td>
-            <td>{{ document.CISeries }}</td>
-            <td>{{ document.CINr }}</td>
-            <td>{{ document.CNP }}</td>
-            <td>{{ document.cubeMeters }}</td>
-            <td> <a href="/document/update/{{ document.documentId }}" class="btn text-light bg-dark"> Editeaza </a> <a href="/document/delete/{{ document.documentId }}" class="btn text-light bg-danger"> Sterge </a> </td>
+            <th>Nume
+                <a class="btn bg-dark text-light" href="/documents?fullname=asc">&uarr;</a>
+                <a class="btn bg-dark text-light" href="/documents?fullname=desc">&darr;</a>
+            </th>
+            <th>Localitate</th>
+            <th>Strada</th>
+            <th>Numar casa</th>
+            <th>Hectare</th>
+            <th>Serie</th>
+            <th>Numar</th>
+            <th>CNP</th>
+            <th>Mc</th>
+            <th>Action</th>
         </tr>
-        </tbody>
-    {% endfor %}
-</table>
+        </thead>
+        {% for document in documents%}
+            <tbody>
+            <tr>
+                <td>{{ document.fullname }}</td>
+                <td>{{ document.locality }}</td>
+                <td>{{ document.street }}</td>
+                <td>{{ document.streetNr }}</td>
+                <td>{{ document.hectare }}</td>
+                <td>{{ document.CISeries }}</td>
+                <td>{{ document.CINr }}</td>
+                <td>{{ document.CNP }}</td>
+                <td>{{ document.cubeMeters }}</td>
+                <td> <a href="/document/update/{{ document.documentId }}" class="btn text-light bg-dark"> Editeaza </a> <a href="/document/delete/{{ document.documentId }}" class="btn text-light bg-danger"> Sterge </a> </td>
+            </tr>
+            </tbody>
+        {% endfor %}
+    </table>
 {% endblock %}

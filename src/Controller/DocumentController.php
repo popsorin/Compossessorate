@@ -168,7 +168,7 @@ class DocumentController extends AbstractController
         $document = new Document();
         $documents = $this->getDoctrine()->getRepository(Document::class)->findBy([]);
         $form = $this->createForm(DocumentType::class, $document);
-        $html = $this->renderView("compossessorate/documents.html.twig", [
+        $html = $this->renderView("compossessorate/table-of-documents.html.twig", [
             "documents" => $documents,
             'form' => $form->createView()
         ]);
