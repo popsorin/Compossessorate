@@ -8,6 +8,9 @@ use ReflectionException;
 abstract class AbstractFactory
 {
     /**
+     * Create an object from a .txt file
+     * There can be only one word on every line
+     *
      * @param string $filename
      * @return array
      * @throws ReflectionException
@@ -18,16 +21,18 @@ abstract class AbstractFactory
         $reflection = new ReflectionClass($this->getEntityName());
         $entities = [];
         $properties = $reflection->getProperties();
-
-        do {
+        $line = fgets($handle);
+        while($line) {
             $entity = $reflection->newInstanceWithoutConstructor();
             foreach ($properties as $property) {
-                $line = fgets($handle);
                 $property->setAccessible(true);
                 $property->setValue($entity, $line);
+                $line = fgets($handle);
             }
-            $entities[] = $entity;
-        }while($line);
+            if($line) {
+                $entities[] = $entity;
+            }
+        }
         fclose($handle);
 
         return $entities;

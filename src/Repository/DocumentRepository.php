@@ -26,6 +26,8 @@ class DocumentRepository extends ServiceEntityRepository
     /**
      * @param array $documents
      * @throws ConnectionException
+     * @throws Exception
+     * @throws ORMException
      */
     public function insertMultipleValues(array $documents)
     {

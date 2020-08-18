@@ -72,12 +72,19 @@ class DocumentController extends AbstractController
                 $documentRepository->insertMultipleValues($documents);
                 unlink(sprintf('%s/%s', $documentDirectory, $newFilename));
             } catch (ORMException $exception) {
-                return $this->render("error.html.twig", ["form" => $form->createView(), "documents" => $exception->getMessage()]);
+                return $this->render("compossessorate/documents.html.twig", [
+                    "form" => $form->createView(),
+                    "documents" => $exception->getMessage()
+                ]);
+            } catch (FileException $exception) {
+                return $this->render("error.html.twig", [
+                    "form" => $form->createView(),
+                    "documents" => $exception->getMessage()
+                ]);
             }
-            $documents = $documentRepository->findAll();
         }
 
-        return $this->render("compossessorate/documents.html.twig", ["form" => $form->createView(), "documents" => $documents]);
+        return $this->redirect("/documents");
     }
 
     /**
@@ -109,7 +116,9 @@ class DocumentController extends AbstractController
             return $this->redirect('/documents');
         }
 
-        return $this->render('compossessorate/new-document.html.twig', ['form' => $form->createView(), 'errors' => []]);
+        return $this->render('compossessorate/new-document.html.twig', [
+            'form' => $form->createView(), 'errors' => []
+        ]);
     }
 
     /**
@@ -146,8 +155,10 @@ class DocumentController extends AbstractController
             $document = $form->getData();
             $errors = $validator->validate($document);
             if(count($errors) > 0) {
-                return $this->render("compossessorate/new-document.html.twig", ['form' => $form->createView(),
-                    "errors" => $errors]);
+                return $this->render("compossessorate/new-document.html.twig", [
+                    'form' => $form->createView(),
+                    "errors" => $errors
+                ]);
             }
             $entityManager->flush();
 
