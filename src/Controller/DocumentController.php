@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Document;
-use App\FormType\DocumentType;
+use App\FormType\UploadDocumentType;
 use App\FormType\FormDocumentType;
 use App\Repository\DocumentRepository;
 use App\Services\PDFConverter;
@@ -39,7 +39,7 @@ class DocumentController extends AbstractController
     {
         $order = $parameterBag->createFromRequest($request);
         $documents = $this->getDoctrine()->getRepository(Document::class)->findBy([], $order);
-        $form = $this->createForm(DocumentType::class, new Document());
+        $form = $this->createForm(UploadDocumentType::class, new Document());
         return $this->render("compossessorate/documents.html.twig", ["form" => $form->createView(), "documents" => $documents]);
     }
 
@@ -56,7 +56,7 @@ class DocumentController extends AbstractController
     public function upload(Request $request, UploadingService $service, DocumentFactory $documentFactory)
     {
         $document = new Document();
-        $form = $this->createForm(DocumentType::class, $document);
+        $form = $this->createForm(UploadDocumentType::class, $document);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $brochureFile */
@@ -172,7 +172,7 @@ class DocumentController extends AbstractController
         $order = $parameterBag->createFromRequest($request);
         $document = new Document();
         $documents = $this->getDoctrine()->getRepository(Document::class)->findBy([], $order);
-        $form = $this->createForm(DocumentType::class, $document);
+        $form = $this->createForm(UploadDocumentType::class, $document);
         $html = $this->renderView("compossessorate/table-of-documents.html.twig", [
             "documents" => $documents,
             'form' => $form->createView()

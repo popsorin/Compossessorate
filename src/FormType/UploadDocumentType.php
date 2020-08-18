@@ -10,11 +10,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
-class DocumentType extends AbstractType
+class UploadDocumentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('compossessorate_table', FileType::class, [
+            "label" => " ",
             "attr" => ['class' => "btn btn-dark mt-0 float-left nav-link"],
             'mapped' => false,
             'required' => false,
