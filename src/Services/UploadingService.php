@@ -12,29 +12,21 @@ use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 class UploadingService
 {
-    private SluggerInterface $slugger;
-
-    public function __construct( SluggerInterface $slugger)
-    {
-        $this->slugger = $slugger;
-    }
-
+    /**
+     * Uploads a file in the "Documents" folder
+     *
+     * @param $formFile
+     * @param string $targetDirectory
+     * @return string
+     */
     public function upload($formFile, string $targetDirectory)
     {
         $originalFilename = pathinfo($formFile->getClientOriginalName(), PATHINFO_FILENAME);
-        // this is needed to safely include the file name as part of the URL
-        $safeFilename = $this->slugger->slug($originalFilename);
-        $newFilename = $safeFilename . '-' . uniqid() . '.' . $formFile->guessExtension();
-
-        // Move the file to the directory where brochures are stored
-        try {
-            $formFile->move(
-                $targetDirectory,
-                $newFilename
-            );
-        } catch (FileException $e) {
-            // ... handle exception if something happens during file upload
-        }
+        $newFilename = $originalFilename . '-' . uniqid() . '.' . $formFile->guessExtension();
+        $formFile->move(
+            $targetDirectory,
+            $newFilename
+        );
 
         return $newFilename;
     }
