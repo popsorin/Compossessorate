@@ -21,13 +21,15 @@ abstract class AbstractFactory
         $reflection = new ReflectionClass($this->getEntityName());
         $entities = [];
         $properties = $reflection->getProperties();
-        $line = fgets($handle);
+        $line = stream_get_line($handle, 100, "\n");
         while($line) {
             $entity = $reflection->newInstanceWithoutConstructor();
             foreach ($properties as $property) {
+                $line = preg_replace("/,/i", '.', $line);
                 $property->setAccessible(true);
+                $line = (is_numeric($line)) ? (float)$line : $line;
                 $property->setValue($entity, $line);
-                $line = fgets($handle);
+                $line = stream_get_line($handle, 100, "\n");
             }
             if($line) {
                 $entities[] = $entity;

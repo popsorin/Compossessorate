@@ -41,7 +41,7 @@ class Document
     private $streetNr;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $hectare;
 
@@ -61,7 +61,7 @@ class Document
     private $CNP;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $cubeMeters;
 
@@ -118,12 +118,12 @@ class Document
         return $this;
     }
 
-    public function getHectare(): ?int
+    public function getHectare(): ?float
     {
         return $this->hectare;
     }
 
-    public function setHectare(int $hectare): self
+    public function setHectare(float $hectare): self
     {
         $this->hectare = $hectare;
 
@@ -166,12 +166,12 @@ class Document
         return $this;
     }
 
-    public function getCubeMeters(): ?int
+    public function getCubeMeters(): ?float
     {
         return $this->cubeMeters;
     }
 
-    public function setCubeMeters(int $cubeMeters): self
+    public function setCubeMeters(float $cubeMeters): self
     {
         $this->cubeMeters = $cubeMeters;
 
