@@ -1,30 +1,41 @@
+<style>
+    th,table,td {
+        border: 1px solid black
+    }
+    table {
+        border-collapse: collapse; border: 1px solid black
+    }
+    th,td {
+        padding: 1px;
+    }
+</style>
 {% block body %}
-<table style="border-collapse: collapse; border: 1px solid black">
+<table>
     <thead>
     <tr>
-        <th style="border: 1px solid black">Nume</th>
-        <th style="border: 1px solid black">Localitate</th>
-        <th style="border: 1px solid black">Strada</th>
-        <th style="border: 1px solid black">Numar casa</th>
-        <th style="border: 1px solid black">Hectare</th>
-        <th style="border: 1px solid black">Serie</th>
-        <th style="border: 1px solid black">Numar</th>
-        <th style="border: 1px solid black">CNP</th>
-        <th style="border: 1px solid black">Mc</th>
+        <th style="">Nume</th>
+        <th >Localitate</th>
+        <th >Strada</th>
+        <th >Numar casa</th>
+        <th >Hectare</th>
+        <th >Serie</th>
+        <th >Numar</th>
+        <th >CNP</th>
+        <th >Mc</th>
     </tr>
     </thead>
     {% for document in documents%}
     <tbody>
     <tr>
-        <td style="border: 1px solid black">{{ document.fullname }}</td>
-        <td style="border: 1px solid black">{{ document.locality }}</td>
-        <td style="border: 1px solid black">{{ document.street }}</td>
-        <td style="border: 1px solid black">{{ document.streetNr }}</td>
-        <td style="border: 1px solid black">{{ document.hectare }}</td>
-        <td style="border: 1px solid black">{{ document.CISeries }}</td>
-        <td style="border: 1px solid black">{{ document.CINr }}</td>
-        <td style="border: 1px solid black">{{ document.CNP }}</td>
-        <td style="border: 1px solid black">{{ document.cubeMeters }}</td>
+        <td >{{ document.fullname }}</td>
+        <td >{{ document.locality }}</td>
+        <td >{{ document.street }}</td>
+        <td >{{ document.streetNr }}</td>
+        <td >{{ document.hectare }}</td>
+        <td >{{ document.CISeries }}</td>
+        <td >{{ document.CINr }}</td>
+        <td >{{ document.CNP }}</td>
+        <td >{{ document.cubeMeters }}</td>
       </tr>
     </tbody>
     {% endfor %}
