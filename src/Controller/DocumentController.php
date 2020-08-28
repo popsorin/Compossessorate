@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Document;
+use App\FormType\PaginateDocumentsType;
 use App\FormType\UploadDocumentType;
 use App\FormType\FormDocumentType;
 use App\Repository\DocumentRepository;
@@ -39,8 +40,14 @@ class DocumentController extends AbstractController
     {
         $order = $parameterBag->createFromRequest($request);
         $documents = $this->getDoctrine()->getRepository(Document::class)->findBy([], $order);
-        $form = $this->createForm(UploadDocumentType::class, new Document());
-        return $this->render("compossessorate/documents.html.twig", ["form" => $form->createView(), "documents" => $documents]);
+        $uploadForm = $this->createForm(UploadDocumentType::class, new Document());
+        $paginationForm = $this->createForm(PaginateDocumentsType::class);
+
+        return $this->render("compossessorate/documents.html.twig", [
+            "uploadForm" => $uploadForm->createView(),
+            "paginationForm" => $paginationForm->createView(),
+            "documents" => $documents
+        ]);
     }
 
     /**
@@ -97,10 +104,9 @@ class DocumentController extends AbstractController
     public function new(Request $request, ValidatorInterface $validator)
     {
         $document = new Document();
-
         $form = $this->createForm(FormDocumentType::class, $document);
-
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid()) {
             $document = $form->getData();
             $errors = $validator->validate($document);
@@ -108,7 +114,6 @@ class DocumentController extends AbstractController
                 return $this->render("compossessorate/new-document.html.twig", [
                     "errors" => $errors]);
             }
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($document);
             $entityManager->flush();
