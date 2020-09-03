@@ -4,8 +4,8 @@
         <thead class="thead-dark">
         <tr>
             <th>Nume
-                <a class="btn bg-dark text-light" href="/documents?fullname=asc">&uarr;</a>
-                <a class="btn bg-dark text-light" href="/documents?fullname=desc">&darr;</a>
+                <a class="btn bg-dark text-light" href="/documents?fullname=asc&{{ orderURL }}">&uarr;</a>
+                <a class="btn bg-dark text-light" href="/documents?fullname=desc&{{ orderURL }}">&darr;</a>
             </th>
             <th>Localitate</th>
             <th>Strada</th>
@@ -18,7 +18,7 @@
             <th>Action</th>
         </tr>
         </thead>
-        {% for document in documents%}
+        {% for document in documents %}
             <tbody>
             <tr>
                 <td>{{ document.fullname }}</td>
