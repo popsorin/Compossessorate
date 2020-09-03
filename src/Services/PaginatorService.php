@@ -9,6 +9,7 @@ class PaginatorService
     private int $documentsPerPage;
     private int $totalNumberOfDocuments;
     private int $currentPage;
+    private int $numberOfPages;
 
     /**
      * PaginatorService constructor.
@@ -16,11 +17,15 @@ class PaginatorService
      * @param int $totalNumberOfDocuments
      * @param int $currentPage
      */
-    public function __construct(int $documentsPerPage = 50, int $totalNumberOfDocuments = 0, $currentPage = 1)
-    {
-        $this->documentsPerPage = $documentsPerPage;
-        $this->totalNumberOfDocuments = $totalNumberOfDocuments;
-        $this->currentPage = $currentPage;
+    public function __construct(
+        ?int $documentsPerPage = 50,
+        ?int $totalNumberOfDocuments = 0,
+        ?int $currentPage = 1
+    ) {
+        $this->documentsPerPage = $documentsPerPage ?? 50;
+        $this->totalNumberOfDocuments = $totalNumberOfDocuments ?? 0;
+        $this->currentPage = $currentPage ?? 1;
+        $this->setNumberOfPages();
     }
 
     /**
@@ -32,6 +37,14 @@ class PaginatorService
     }
 
     /**
+     * @return int
+     */
+    public function getDocumentsPerPage(): int
+    {
+        return $this->documentsPerPage;
+    }
+
+    /**
      *  function calculates the offset for retrieving documents from the database
      */
     public function getOffset(): int
@@ -40,10 +53,28 @@ class PaginatorService
     }
 
     /**
-     *  function calculates the limit for retrieving documents from the database
+     * @return $this
      */
-    public function getLimit(): int
+    private function setNumberOfPages(): self
     {
-        return $this->documentsPerPage * $this->currentPage - 1;
+        $this->numberOfPages = ceil($this->totalNumberOfDocuments / $this->documentsPerPage);
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPreviousPage(): int
+    {
+        return ($this->currentPage - 1 > 0) ? $this->currentPage - 1 : $this->currentPage;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNextPage(): int
+    {
+        return ($this->currentPage + 1 <= $this->numberOfPages) ? $this->currentPage + 1 : $this->currentPage;
     }
 }

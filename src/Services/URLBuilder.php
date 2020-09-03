@@ -21,7 +21,7 @@ class URLBuilder
      * @param string $exclude
      * @return string
      */
-    public function get(RequestParameterBag $parameterBag, string $exclude): string
+    public function get(RequestParameterBag $parameterBag, string $exclude = ""): string
     {
         $url = "";
         $parameters = $parameterBag->all();

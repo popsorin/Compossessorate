@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Document;
-use App\FormType\PaginateDocumentsType;
 use App\FormType\UploadDocumentType;
 use App\FormType\FormDocumentType;
 use App\Repository\DocumentRepository;
@@ -46,15 +45,26 @@ class DocumentController extends AbstractController
     ): Response {
         $parameterBag->createFromRequest($request);
         $documentRepository = $this->getDoctrine()->getRepository(Document::class);
-        $documentsPerPage = $parameterBag->get("documents_per_page") ?? 50;
-        $paginator = new PaginatorService($documentsPerPage, count($documentRepository->findAll()));
-        $documents = $documentRepository->findBy([], $parameterBag->getArray("fullname"), $paginator->getLimit(), $paginator->getOffset());
+        $paginator = new PaginatorService(
+            $parameterBag->get("documents_per_page"),
+            count($documentRepository->findAll()),
+            $parameterBag->get("page")
+        );
+        $documents = $documentRepository->findBy(
+            [],
+            $parameterBag->getArray("fullname"),
+            $paginator->getDocumentsPerPage(),
+            $paginator->getOffset()
+        );
         $uploadForm = $this->createForm(UploadDocumentType::class, new Document());
 
         return $this->render("compossessorate/documents.html.twig", [
-            "OrderURL" => $URLBuilder->get($parameterBag,"fullname"),
-            "DocumentsPerPageURL" => $URLBuilder->get($parameterBag,"documents_per_page"),
+            "orderURL" => $URLBuilder->get($parameterBag,"fullname"),
+            "documentsPerPageURL" => $URLBuilder->get($parameterBag,"documents_per_page"),
+            "pageURL" => $URLBuilder->get($parameterBag, "page"),
             "page" => $paginator->getCurrentPage(),
+            "previousPage" => $paginator->getPreviousPage(),
+            "nextPage" => $paginator->getNextPage(),
             "uploadForm" => $uploadForm->createView(),
             "documents" => $documents
         ]);
@@ -193,19 +203,34 @@ class DocumentController extends AbstractController
      * @param RequestParameterBag $parameterBag
      * @return RedirectResponse
      */
-    public function convert(Request $request, PDFConverter $converter, RequestParameterBag $parameterBag)
-    {
-        $order = $parameterBag->createFromRequest($request);
+    public function convert(
+        Request $request,
+        PDFConverter $converter,
+        RequestParameterBag $parameterBag,
+        URLBuilder $URLBuilder
+    ) {
+        $parameterBag->createFromRequest($request);
+        $documentRepository = $this->getDoctrine()->getRepository(Document::class);
+        $paginator = new PaginatorService(
+            $parameterBag->get("documents_per_page"),
+            count($documentRepository->findAll()),
+            $parameterBag->get("page")
+        );
         $document = new Document();
-        $documents = $this->getDoctrine()->getRepository(Document::class)->findBy([], $order);
+        $documents =  $documentRepository->findBy(
+            [],
+            $parameterBag->getArray("fullname"),
+            $paginator->getDocumentsPerPage(),
+            $paginator->getOffset()
+        );
         $form = $this->createForm(UploadDocumentType::class, $document);
         $html = $this->renderView("compossessorate/pdf-table-of-documents.html.twig", [
             "documents" => $documents,
             'form' => $form->createView()
         ]);
         $projectDirectory = $this->getParameter("kernel.project_dir");
-        $converter->convert($html, 1, $projectDirectory);
+        $converter->convert($html, $paginator->getCurrentPage(), $projectDirectory);
 
-        return $this->redirect("/documents");
+        return $this->redirect(sprintf("/documents?%s", $URLBuilder->get($parameterBag)));
     }
 }

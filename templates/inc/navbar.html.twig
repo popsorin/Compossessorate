@@ -2,7 +2,7 @@
    <div class="collapse navbar-collapse" id="navbarSupportedContent">
        <ul class="navbar-nav mr-auto">
            <li class="nav-item">
-               <a class="nav-link btn btn-dark btn-lg" href="/documents/convert?fullname=asc">Salveaza ca poza</a>
+               <a class="nav-link btn btn-dark btn-lg" href="/documents/convert?fullname=asc{{ orderURL }}">Salveaza ca poza</a>
            </li>
            <li class="nav-item">
                <a class="nav-link btn btn-dark btn-lg" href="/document/new">Adauga <span class="sr-only">(current)</span></a>
@@ -14,11 +14,11 @@
                <div class="dropdown">
                    <button class="dropbtn nav-link btn btn-dark btn-lg">Numar de documente</button>
                    <div class="dropdown-content">
-                       <a href="/documents?documents_per_page=10{{ DocumentsPerPageURL }}">10</a>
-                       <a href="/documents?documents_per_page=20{{ DocumentsPerPageURL }}">20</a>
-                       <a href="/documents?documents_per_page=30{{ DocumentsPerPageURL }}">30</a>
-                       <a href="/documents?documents_per_page=40{{ DocumentsPerPageURL }}">40</a>
-                       <a href="/documents?documents_per_page=50{{ DocumentsPerPageURL }}">50</a>
+                       <a href="/documents?documents_per_page=10{{ documentsPerPageURL }}">10</a>
+                       <a href="/documents?documents_per_page=20{{ documentsPerPageURL }}">20</a>
+                       <a href="/documents?documents_per_page=30{{ documentsPerPageURL }}">30</a>
+                       <a href="/documents?documents_per_page=40{{ documentsPerPageURL }}">40</a>
+                       <a href="/documents?documents_per_page=50{{ documentsPerPageURL }}">50</a>
                    </div>
                </div>
        </ul>

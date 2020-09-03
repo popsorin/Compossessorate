@@ -4,8 +4,8 @@
         <thead class="thead-dark">
         <tr>
             <th>Nume
-                <a class="btn bg-dark text-light" href="/documents?fullname=asc&{{ OrderURL }}">&uarr;</a>
-                <a class="btn bg-dark text-light" href="/documents?fullname=desc&{{ OrderURL }}">&darr;</a>
+                <a class="btn bg-dark text-light" href="/documents?fullname=asc&{{ orderURL }}">&uarr;</a>
+                <a class="btn bg-dark text-light" href="/documents?fullname=desc&{{ orderURL }}">&darr;</a>
             </th>
             <th>Localitate</th>
             <th>Strada</th>
@@ -35,7 +35,4 @@
             </tbody>
         {% endfor %}
     </table>
-    <a href="">Inapoi</a>
-    <a href="">{{ page }} </a>
-    <a href="">Inainte</a>
 {% endblock %}

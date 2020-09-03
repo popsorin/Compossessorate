@@ -19,5 +19,8 @@
         {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
         {% endblock %}
+    {% block pagination %}
+    {% include "inc/pagination.html.twig" %}
+    {% endblock %}
     </body>
 </html>
