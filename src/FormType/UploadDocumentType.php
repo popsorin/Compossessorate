@@ -35,6 +35,7 @@ class UploadDocumentType extends AbstractType
         $builder->add('submit', SubmitType::class, [
             "attr" => ["class" => "btn btn-dark nav-link"]
             ]);
+        $builder->setAction("document/upload");
     }
 
     public function configureOptions(OptionsResolver $resolver)

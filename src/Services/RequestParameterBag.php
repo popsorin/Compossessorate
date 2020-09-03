@@ -16,23 +16,20 @@ class RequestParameterBag extends ParameterBag
      * that contains them.
      *
      * @param Request $request
-     * @return array
+     * @return RequestParameterBag
      */
-    public function createFromRequest(Request $request)
+    public function createFromRequest(Request $request): self
     {
-        $reflection = new ReflectionClass(Document::class);
-        $properties = $reflection->getProperties();
         $queryStringArray = $request->query->all();
 
-        foreach ($properties as $property) {
-            $property->setAccessible(true);
-            $propertyName = $property->getName();
-            $queryStringValue = $request->query->get($propertyName);
-            if(array_key_exists($propertyName, $queryStringArray)) {
-                $this->parameters[$propertyName] = $queryStringValue;
-            }
+        foreach ($queryStringArray as $key => $queryString) {
+                $this->set($key, $queryString);
         }
+        return $this;
+    }
 
-        return $this->parameters;
+    public function getArray(string $key, $default = null)
+    {
+        return \array_key_exists($key, $this->parameters) ? [$key => $this->parameters[$key]] : $default;
     }
 }

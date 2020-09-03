@@ -7,10 +7,12 @@ use App\FormType\PaginateDocumentsType;
 use App\FormType\UploadDocumentType;
 use App\FormType\FormDocumentType;
 use App\Repository\DocumentRepository;
+use App\Services\PaginatorService;
 use App\Services\PDFConverter;
 use App\Services\DocumentFactory;
 use App\Services\RequestParameterBag;
 use App\Services\UploadingService;
+use App\Services\URLBuilder;
 use Doctrine\DBAL\ConnectionException;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -31,27 +33,35 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class DocumentController extends AbstractController
 {
     /**
-     * @Route("/documents", name="documents_list", methods={"GET"})
+     * @Route("/documents", name="documents_list", methods={"GET", "POST"})
      * @param Request $request
      * @param RequestParameterBag $parameterBag
+     * @param URLBuilder $URLBuilder
      * @return Response
      */
-    public function listDocuments(Request $request, RequestParameterBag $parameterBag)
-    {
-        $order = $parameterBag->createFromRequest($request);
-        $documents = $this->getDoctrine()->getRepository(Document::class)->findBy([], $order);
+    public function listDocuments(
+        Request $request,
+        RequestParameterBag $parameterBag,
+        URLBuilder $URLBuilder
+    ): Response {
+        $parameterBag->createFromRequest($request);
+        $documentRepository = $this->getDoctrine()->getRepository(Document::class);
+        $documentsPerPage = $parameterBag->get("documents_per_page") ?? 50;
+        $paginator = new PaginatorService($documentsPerPage, count($documentRepository->findAll()));
+        $documents = $documentRepository->findBy([], $parameterBag->getArray("fullname"), $paginator->getLimit(), $paginator->getOffset());
         $uploadForm = $this->createForm(UploadDocumentType::class, new Document());
-        $paginationForm = $this->createForm(PaginateDocumentsType::class);
 
         return $this->render("compossessorate/documents.html.twig", [
+            "OrderURL" => $URLBuilder->get($parameterBag,"fullname"),
+            "DocumentsPerPageURL" => $URLBuilder->get($parameterBag,"documents_per_page"),
+            "page" => $paginator->getCurrentPage(),
             "uploadForm" => $uploadForm->createView(),
-            "paginationForm" => $paginationForm->createView(),
             "documents" => $documents
         ]);
     }
 
     /**
-     * @Route("/documents", name="document_upload", methods={"POST"})
+     * @Route("/document/upload", name="document_upload", methods={"POST"})
      *
      * @param Request $request
      * @param UploadingService $service
@@ -189,7 +199,7 @@ class DocumentController extends AbstractController
         $document = new Document();
         $documents = $this->getDoctrine()->getRepository(Document::class)->findBy([], $order);
         $form = $this->createForm(UploadDocumentType::class, $document);
-        $html = $this->renderView("compossessorate/table-of-documents.html.twig", [
+        $html = $this->renderView("compossessorate/pdf-table-of-documents.html.twig", [
             "documents" => $documents,
             'form' => $form->createView()
         ]);
